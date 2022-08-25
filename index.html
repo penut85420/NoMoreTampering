@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script class="jsbin" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="icon.png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <title>No More Tampering</title>
+    <!--[if IE]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <style>
+        * {
+            background-color: darkslategray;
+            color: gainsboro;
+            font-family: 'Noto Sans TC';
+            text-align: center;
+            size: 12px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <p>如果遇到 Idalon 回報錯誤 "Log Tampering Detected"（檢查到竄改紀錄）</p>
+    <p>可以試著把 EE.log 裡面跟 "Error" 有關的每一行都刪掉，就有機會上傳成功了</p>
+    <p>這個工具可以協助你快速將 Log 裡面與 Error 有關的紀錄刪除</p>
+    <p>但如果玩家的 ID 裡面有 Error 的話也會一起被刪除</p>
+    <p>↓ 點此按鈕選擇 EE.log ↓</p>
+    <input type="file" onchange="readURL(this);" />
+    <p>↑ 點此按鈕選擇 EE.log ↑</p>
+    <p>EE.log 的位置在 %localappdata%/Warframe 裡面</p>
+</body>
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                var inn = e.target.result;
+                var out = inn.replace(/\n.*error.*/ig, '')
+                download("EE_NoError.log", out)
+            };
+
+            reader.readAsText(input.files[0]);
+        }
+    }
+
+    function download(file, text) {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/html;charset=utf-8, ' + encodeURIComponent(text));
+        console.log(element.href);
+        element.setAttribute('download', file);
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    }
+</script>
+
+</html>
